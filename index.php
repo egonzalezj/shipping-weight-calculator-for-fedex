@@ -27,7 +27,7 @@ $height = 0.0;
 function calculateShippingWeight() {
   global $product, $weight;
   $weight = floatval($product -> get_weight());
-  echo "<script>console.log('$w');</script>";
+  echo "<script>console.log('$weight');</script>";
   calculateVolumetricWeight();
 }
 
@@ -51,19 +51,24 @@ function calculateVolumetricWeight() {
   else {
     $volumetricWeight = 0.0;
   }
+  compareWeights();
 }
 
 function compareWeights() {
   global $weight, $volumetricWeight, $shippingWeight;
+  echo "<script>console.log('Volumetric Weight:".$volumetricWeight.", Real Weight:".$weight."');</script>";
   if(!$weight) {
     $weight = calculateVolumetricWeight();
   }
   if($weight > $volumetricWeight) {
     $shippingWeight = $weight;
-  } else if($volumetricWeight > $weight) {
+    echo "<script>console.log('Real Weight is heavier');</script>";
+  } else if($weight < $volumetricWeight) {
     $shippingWeight = $volumetricWeight;
+    echo "<script>console.log('Volumetric Weight is heavier');</script>";
   } else {
     $shippingWeight = $weight;
+    echo "<script>console.log('Volumetric and Real Weight are equal');</script>";
   }
 }
 
