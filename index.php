@@ -8,6 +8,11 @@
   Author URI: http://github.com/egonzalezj
 */
 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
+
+if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) return; // Check if WooCommerce is active
+
+add_action('woocommerce_after_shop_loop_item', 'calculateShippingWeight', 10);
 
 /* Weight types */
 $weight = 0.0;
@@ -19,16 +24,21 @@ $length = 0.0;
 $width = 0.0;
 $height = 0.0;
 
-$weight = floatval(WC_Product::get_weight());
-calculateVolumetricWeight();
+function calculateShippingWeight() {
+  global $product, $weight;
+  $weight = floatval($product -> get_weight());
+  echo "<script>console.log('$w');</script>";
+  calculateVolumetricWeight();
+}
 
 function setDimensions() {
-  if(WC_Product::has_dimensions()) {
+  global $product;
+  if($product -> has_dimensions()) {
     global $length, $width, $height;
-    $length = floatval(WC_Product::get_length());
-    $width = floatval(WC_Product::get_width());
-    $height = floatval(WC_Product::get_height());
-    echo $length . " x " . $width . " x " . $height . " cm";
+    $length = floatval($product -> get_length());
+    $width = floatval($product -> get_width());
+    $height = floatval($product -> get_height());
+    echo "<script>console.log('".$length." x ".$width." x ".$height."');</script>";
     return true;
   } else return false;
 }
