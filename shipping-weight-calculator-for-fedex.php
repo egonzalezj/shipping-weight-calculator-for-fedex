@@ -1,20 +1,30 @@
 <?php
-  /*
-  Plugin Name: Woocommerce Shipping Weight Calculator
-  Plugin URI: http://github.com/egonzalezj
-  Description: Simple plugin to set the shipping weight according to volumetric weight or real weight.
-  Author: Elisabet González
-  Version: 1.0
-  Author URI: http://github.com/egonzalezj
+  /**
+  * Plugin Name: Shipping Weight Calculator for FedEx
+  * Plugin URI: http://github.com/egonzalezj
+  * Description: Simple plugin to set the shipping weight according to volumetric weight or real weight.
+  * Version: 1.0
+  * Author: Elisabet González
+  * Author URI: http://github.com/egonzalezj
+  * Developer: Elisabet González
+  * Developer URI: http://github.com/egonzalezj
+  *
+  * Copyright: © 2017.
+  * License: GPL
+  * License: URI: https://www.gnu.org/licenses/gpl.html
   */
+
+  defined('ABSPATH') or die('No script kiddies please!');
 
   if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
+  /**
+   * Check if WooCommerce is active
+   **/
   if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) return; // Check if WooCommerce is active
 
-  //include_once( WC_ABSPATH . '/includes/abstracts/abstract-wc-product.php' );
-  //add_action('init', calculateShippingWeight);
-  add_action('woocommerce_after_shop_loop_item', 'calculateShippingWeight', 10);
+  add_action('plugins_loaded', 'calculateShippingWeight');
+  //add_action('woocommerce_after_shop_loop_item', 'calculateShippingWeight', 10);
 
   /**
    * Get products weight from Woocommerce API.
